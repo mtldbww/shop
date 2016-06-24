@@ -64,8 +64,13 @@ class SupplierController extends \Think\Controller {
      * 逻辑删除供货商
      */
     public function del($id) {
+        $data = [
+            'id'     => $id,
+            'status' => -1,
+            'name'   => ['exp', 'concat(name,"_del")']
+        ];
         //调用模型删除
-        if ($this->_model->setField(['id' => $id, 'status' => -1]) === FALSE) {
+        if ($this->_model->setField($data) === FALSE) {
             $this->error(get_error($this->_model));
         } else {
             //跳转
