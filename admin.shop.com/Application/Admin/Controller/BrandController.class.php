@@ -3,27 +3,27 @@
 namespace Admin\Controller;
 
 /**
- * 该控制器用于供货商的管理
+ * 该控制器用于品牌管理
  *
  * @author feng
  */
-class SupplierController extends \Think\Controller {
+class BrandController extends \Think\Controller {
 
     /**
      * 构造方法，自动创建模型
-     * @var \Admin\Model\SupplierModel
+     * @var \Admin\Model\BrandModel
      */
     private $_model = null;
 
     protected function _initialize() {
-        $this->_model = D('Supplier');
+        $this->_model = D('Brand');
     }
 
     /**
-     * 列表页面
+     * 显示页面
      */
     public function index() {
-        //获取搜索关键字
+        //获取关键字
         $name           = I('get.name');
         $cond['status'] = ['egt', 0];
         if ($name) {
@@ -38,7 +38,7 @@ class SupplierController extends \Think\Controller {
     }
 
     /**
-     * 添加供货商
+     * 增加品牌
      */
     public function add() {
         //接受数据
@@ -61,27 +61,10 @@ class SupplierController extends \Think\Controller {
     }
 
     /**
-     * 逻辑删除供货商
-     */
-    public function del($id) {
-        $data = [
-            'id'     => $id,
-            'status' => -1,
-            'name'   => ['exp', 'concat(name,"_del")']
-        ];
-        //调用模型删除
-        if ($this->_model->setField($data) === FALSE) {
-            $this->error(get_error($this->_model));
-        } else {
-            //跳转
-            $this->success('删除成功', U('index'));
-        }
-    }
-
-    /**
-     * 修改供货商
+     * 修改品牌
      */
     public function edit($id) {
+        //接受数据
         if (IS_POST) {
             if ($this->_model->create() === FALSE) {
                 $this->error(get_error($this->_model));
@@ -97,6 +80,24 @@ class SupplierController extends \Think\Controller {
             $this->assign('row', $row);
             //显示页面
             $this->display();
+        }
+    }
+
+    /**
+     * 删除品牌
+     */
+    public function del($id) {
+        $data = [
+            'id'     => $id,
+            'status' => -1,
+            'name'   => ['exp', 'concat(name,"_del")']
+        ];
+        //调用模型删除
+        if ($this->_model->setField($data) === FALSE) {
+            $this->error(get_error($this->_model));
+        } else {
+            //跳转
+            $this->success('删除成功', U('index'));
         }
     }
 
